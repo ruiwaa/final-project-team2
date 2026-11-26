@@ -14,6 +14,7 @@ export const useToggleWishList = () => {
     }: {
       productId: string
       isLiked: boolean
+      productName: string
     }) => {
       const {
         data: { user },
@@ -36,9 +37,11 @@ export const useToggleWishList = () => {
     },
 
     // 찜하기 버튼 성공 처리
-    onSuccess: (_data, { isLiked }) => {
+    onSuccess: (_data, { isLiked, productName }) => {
       toast(
-        isLiked ? '찜한 상품을 해제하였습니다.' : '찜한 상품을 추가하였습니다.',
+        isLiked
+          ? `${productName} 찜을 해제했습니다.`
+          : `${productName}을(를) 찜했습니다.`,
       )
     },
     // 찜하기 버튼 실패 처리

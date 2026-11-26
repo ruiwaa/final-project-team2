@@ -20,6 +20,7 @@ const HeartButton = ({ productId, product_name }: HeartButtonProps) => {
   const { data: likeIds, isPending: isChecking } = useLikedIdsQuery(isLogin)
 
   const liked = likeIds?.has(productId) ?? false
+  const isBusy = isPending || (isLogin && isChecking)
 
   const handleClick = () => {
     if (isPending) return
@@ -30,7 +31,11 @@ const HeartButton = ({ productId, product_name }: HeartButtonProps) => {
 
     if (isChecking) return
 
-    mutate({ productId, isLiked: liked })
+    mutate({
+      productId,
+      isLiked: liked,
+      productName: product_name,
+    })
   }
 
   return (
@@ -38,12 +43,10 @@ const HeartButton = ({ productId, product_name }: HeartButtonProps) => {
       <button
         type="button"
         onClick={handleClick}
-        aria-disabled={isPending}
-        aria-label={
-          liked ? `${product_name} 찜 취소` : `${product_name} 찜 추가`
-        }
-        aria-pressed={liked ? 'true' : 'false'}
-        className="disabled:cursor-not-allowed disabled:opacity-50"
+        aria-disabled={isBusy}
+        aria-label={`${product_name} 찜하기`}
+        aria-pressed={liked}
+        className="aria-disabled:cursor-not-allowed aria-disabled:opacity-50"
       >
         <Heart
           className={`h-10 w-10 p-2 text-gray-700 transition-transform duration-200 hover:scale-125 ${
@@ -68,11 +71,10 @@ const HeartButton = ({ productId, product_name }: HeartButtonProps) => {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <Link
-              aria-label="로그인페이지로 이동하기"
               href="/login"
               className="flex items-center justify-center rounded-xl border-2 bg-white py-3 text-sm font-semibold text-black transition hover:bg-gray-300"
             >
-              예
+              로그인하기
             </Link>
             <button
               type="button"
