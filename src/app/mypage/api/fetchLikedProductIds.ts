@@ -12,6 +12,6 @@ export const fetchLikedProductIds = async (): Promise<string[]> => {
     .select('product_id')
     .eq('user_id', user.id)
 
-  if (error) throw error // 이슈 1과 같은 이유
+  if (error) throw error
   return data.map((row) => row.product_id)
 }
