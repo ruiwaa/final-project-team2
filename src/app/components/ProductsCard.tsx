@@ -11,7 +11,6 @@ import {
 } from '@/utils/intl'
 import HeartButton from '../(shop)/products/[mainCategory]/[id]/_components/Product/HeartButton'
 import { getMainCategoryName } from '../(shop)/products/[mainCategory]/lib/category'
-import { useIsLikedQuery } from '../mypage/consumer/wishlist/hooks/useIsLikedQuery'
 
 interface ProductCardProps {
   product: Products
@@ -27,8 +26,6 @@ function ProductsCard({
   category,
   inventoryTag,
 }: ProductCardProps) {
-  const { data: isLiked } = useIsLikedQuery(product.id)
-
   const fallback = '/fallback.png'
   const [imgSrc, setImgSrc] = useState(product.thumbnail_image || fallback)
   const [isLoaded, setIsLoaded] = useState(false)
@@ -129,7 +126,6 @@ function ProductsCard({
         <HeartButton
           aria-hidden="true"
           productId={product.id}
-          initialLiked={isLiked}
           product_name={productName}
         />
       </div>

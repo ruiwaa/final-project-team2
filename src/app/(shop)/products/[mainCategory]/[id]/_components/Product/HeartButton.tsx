@@ -1,6 +1,7 @@
 'use client'
 
 import Modal from '@/app/components/Modal'
+import { useLikedIdsQuery } from '@/app/mypage/consumer/wishlist/hooks/useLikedIdsQuery'
 import { useToggleWishList } from '@/app/mypage/consumer/wishlist/hooks/useToggleWishList'
 import { useAuth } from '@/hooks/useAuth'
 import { Heart } from 'lucide-react'
@@ -9,20 +10,16 @@ import { Fragment, useState } from 'react'
 
 type HeartButtonProps = {
   productId: string
-  initialLiked?: boolean
   product_name: string
 }
 
-const HeartButton = ({
-  productId,
-  initialLiked,
-  product_name,
-}: HeartButtonProps) => {
+const HeartButton = ({ productId, product_name }: HeartButtonProps) => {
   const { isLogin } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const { mutate, isPending } = useToggleWishList()
+  const { data: likeIds, isPending: isChecking } = useLikedIdsQuery(isLogin)
 
-  const liked = initialLiked === true
+  const liked = likeIds?.has(productId) ?? false
 
   const handleClick = () => {
     if (isPending) return
@@ -30,6 +27,8 @@ const HeartButton = ({
       setIsOpen(true)
       return
     }
+
+    if (isChecking) return
 
     mutate({ productId, isLiked: liked })
   }
