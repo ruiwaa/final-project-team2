@@ -55,7 +55,6 @@ export default function WishListItemCard({ order }: Props) {
           <HeartButton
             product_name={order.products.name}
             productId={order.product_id}
-            initialLiked={true}
           />
         </div>
 

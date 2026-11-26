@@ -10,4 +10,5 @@ export const useLikedIdsQuery = (enabled: boolean) =>
     queryFn: fetchLikedProductIds,
     select: toSet,
     enabled, // 비로그인이면 요청하지 않음
+    staleTime: 1000 * 60 * 5,
   })
